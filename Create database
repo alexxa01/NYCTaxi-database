@@ -1,0 +1,91 @@
+
+create table Baksis(
+Baksis_id int identity(1,1) not null,
+Placanje_id int not null,
+tipped int not null,
+tip_amount int not null
+constraint Baksis_id primary key(Baksis_id),
+constraint FK_Placanje_id foreign key (Placanje_id) references Placanje(Placanje_id)
+)
+
+create table Placanje(
+Placanje_id int identity(1,1) not null,
+Voznja_id int not null,
+Nacin_id int not null,
+payment_type char(3) not null,
+fare_amount float not null,
+surcharge float not null,
+mta_tax float not null,
+tolls_amount float not null,
+total_amount float not null,
+constraint Placanje_id primary key (Placanje_id),
+constraint FK_Voznja_id foreign key (Voznja_id) references Voznja(Voznja_id),
+constraint FK_Nacin_id foreign key (Nacin_id) references Nacin_Placanja(Nacin_id)
+)
+
+create table Nacin_Placanja(
+Nacin_id int identity(1,1) not null,
+tip_class int null
+constraint Nacin_id primary key (Nacin_id)
+)
+
+create table Voznja(
+Voznja_id int identity(1,1) not null,
+store_and_fwd_flag char(3) null,
+pickup_datetime datetime null,
+dropoff_datetime datetime null,
+passenger_count int null,
+trip_time_in_secs bigint null,
+trip_distance float null,
+pickup_id int not null,
+dropoff_id int not null,
+Vendor_id int not null,
+Tarifa_id int not null,
+Vozi_id int not null,
+constraint Voznja_id primary key (Voznja_id),
+constraint FK_Vendor_id foreign key (Vendor_id) references Operater(Vendor_id),
+constraint FK_Tarifa_id foreign key (Tarifa_id) references Tarifa(Tarifa_id),
+constraint FK_Vozi_id foreign key (Vozi_id) references Vozi(Vozi_id),
+constraint FK_pickup_id foreign key (pickup_id) references Lokacija(Lokacija_id),
+constraint FK_dropoff_id foreign key (dropoff_id) references Lokacija(Lokacija_id)
+)
+
+create table Operater(
+Vendor_id int identity(1,1) not null,
+constraint Vendor_id primary key (Vendor_id)
+)
+
+create table Tarifa(
+Tarifa_id int identity(1,1) not null,
+rate_code char(3) null,
+constraint Tarifa_id primary key (Tarifa_id)
+)
+
+create table Vozi(
+Vozi_id int identity(1,1) not null,
+Vozac_id int not null,
+Vozilo_id int not null,
+constraint Vozi_id primary key (Vozi_id),
+constraint FK_Vozac_id foreign key (Vozac_id) references Vozac(Vozac_id),
+constraint FK_Vozilo_id foreign key (Vozilo_id) references Vozilo(Vozilo_id)
+)	
+
+create table Vozac(
+Vozac_id int identity(1,1) not null,
+medallion NVARCHAR(50) not null,
+constraint Vozac_id primary key (Vozac_id)
+)
+
+create table Vozilo(
+Vozilo_id int identity(1,1) not null,
+hack_license varchar(50) not null,
+constraint Vozilo_id primary key (Vozilo_id)
+)
+
+create table Lokacija (
+Lokacija_id int identity(1,1) not null,
+latitude nvarchar(30) not null,
+longitude varchar(30) not null,
+constraint Lokacija_id primary key (Lokacija_id)
+)
+
